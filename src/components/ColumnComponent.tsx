@@ -12,7 +12,7 @@ interface ColumnProps {
 
 const ColumnComponent = ({ column, index }: ColumnProps) => {
   return (
-    <div className="w-full md:w-80 flex-shrink-0 bg-kanban-lightGray rounded-md shadow overflow-hidden">
+    <div className="w-full md:w-80 flex-shrink-0 bg-kanban-lightGray rounded-md shadow overflow-hidden h-full">
       <ColumnHeader column={column} />
       
       <Droppable droppableId={column.id}>
