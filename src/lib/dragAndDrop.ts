@@ -10,10 +10,12 @@ export interface DragResult {
     droppableId: string;
     index: number;
   } | null;
+  type: string;
+  draggableId: string;
 }
 
 export const handleDragEnd = (result: DragResult) => {
-  const { source, destination } = result;
+  const { source, destination, type } = result;
   
   // Si no hay destino, la operación fue cancelada
   if (!destination) return;
@@ -26,13 +28,22 @@ export const handleDragEnd = (result: DragResult) => {
     return;
   }
 
-  // Mover la nota usando el store
-  const { moveNote } = useBoardStore.getState();
-  const board = useBoardStore.getState();
-  
-  const sourceColumn = board.columns.find(col => col.id === source.droppableId);
-  if (!sourceColumn) return;
-  
-  const noteId = sourceColumn.notes[source.index].id;
-  moveNote(source.droppableId, destination.droppableId, noteId);
+  // Manejar el arrastre de columnas
+  if (type === 'column') {
+    const { moveColumn } = useBoardStore.getState();
+    moveColumn(source.index, destination.index);
+    return;
+  }
+
+  // Manejar el arrastre de notas
+  if (type === 'note') {
+    const { moveNote } = useBoardStore.getState();
+    const board = useBoardStore.getState();
+    
+    const sourceColumn = board.columns.find(col => col.id === source.droppableId);
+    if (!sourceColumn) return;
+    
+    const noteId = sourceColumn.notes[source.index].id;
+    moveNote(source.droppableId, destination.droppableId, noteId);
+  }
 };
