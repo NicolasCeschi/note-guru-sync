@@ -28,11 +28,5 @@ export const handleDragEnd = (result: DragResult) => {
 
   // Mover la nota usando el store
   const { moveNote } = useBoardStore.getState();
-  const board = useBoardStore.getState();
-  
-  const sourceColumn = board.columns.find(col => col.id === source.droppableId);
-  if (!sourceColumn) return;
-  
-  const noteId = sourceColumn.notes[source.index].id;
-  moveNote(source.droppableId, destination.droppableId, noteId);
+  moveNote(source.droppableId, destination.droppableId, sourceColumn.notes[source.index].id);
 };
