@@ -18,5 +18,5 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: "/note-guru-sync/",  // 🔹 Agrega esta línea
+  base: "/note-guru-sync/",  
 }));
