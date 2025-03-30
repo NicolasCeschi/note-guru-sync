@@ -1,3 +1,4 @@
+
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { Board, Column, Note } from '@/types/kanban';
@@ -6,7 +7,6 @@ interface BoardState extends Board {
   addColumn: (title: string) => void;
   updateColumnTitle: (columnId: string, title: string) => void;
   deleteColumn: (columnId: string) => void;
-  moveColumn: (fromIndex: number, toIndex: number) => void;
   addNote: (columnId: string, content: string) => void;
   updateNote: (columnId: string, noteId: string, content: string) => void;
   toggleNoteCompletion: (columnId: string, noteId: string) => void;
@@ -90,15 +90,6 @@ export const useBoardStore = create<BoardState>()(
           columns: state.columns.filter((column) => column.id !== columnId),
         })),
 
-      moveColumn: (fromIndex, toIndex) =>
-        set((state) => {
-          const newColumns = Array.from(state.columns);
-          const [movedColumn] = newColumns.splice(fromIndex, 1);
-          newColumns.splice(toIndex, 0, movedColumn);
-          
-          return { columns: newColumns };
-        }),
-
       addNote: (columnId, content) =>
         set((state) => ({
           columns: state.columns.map((column) => {
@@ -165,14 +156,17 @@ export const useBoardStore = create<BoardState>()(
 
       moveNote: (fromColumnId, toColumnId, noteId) =>
         set((state) => {
+          // Encontrar la columna y nota de origen
           const sourceColumn = state.columns.find((col) => col.id === fromColumnId);
           if (!sourceColumn) return state;
           
           const noteToMove = sourceColumn.notes.find((note) => note.id === noteId);
           if (!noteToMove) return state;
 
+          // Crear nuevo estado con la nota movida
           return {
             columns: state.columns.map((column) => {
+              // Remover la nota de la columna de origen
               if (column.id === fromColumnId) {
                 return {
                   ...column,
@@ -180,6 +174,7 @@ export const useBoardStore = create<BoardState>()(
                 };
               }
               
+              // Agregar la nota a la columna de destino
               if (column.id === toColumnId) {
                 return {
                   ...column,
