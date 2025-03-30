@@ -13,7 +13,7 @@ interface ColumnProps {
 
 const ColumnComponent = ({ column, index }: ColumnProps) => {
   return (
-    <Draggable draggableId={column.id} index={index} type="column">
+    <Draggable draggableId={column.id} index={index}>
       {(provided) => (
         <div
           ref={provided.innerRef}
