@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -51,6 +52,14 @@ export default {
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
+				},
+				kanban: {
+					blue: '#3B82F6',
+					darkBlue: '#1E40AF',
+					green: '#10B981',
+					lightGray: '#F3F4F6',
+					gray: '#9CA3AF',
+					darkGray: '#4B5563'
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
